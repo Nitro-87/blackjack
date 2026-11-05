@@ -33,4 +33,3 @@ func _ready() -> void:
 	card_data = deck.pop_back()
 	c2.rank = card_data[0]
 	c2.suit = card_data[1]
-	
