@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://c5lvwyiyrwqa4"]
+
+[ext_resource type="Script" uid="uid://ch3y0x1w1to4v" path="res://table.gd" id="1_jd0nb"]
+[ext_resource type="PackedScene" uid="uid://dv32v1x73au3x" path="res://card.tscn" id="2_v5i0k"]
+
+[node name="table" type="Node2D" unique_id=1750438773]
+script = ExtResource("1_jd0nb")
+card = ExtResource("2_v5i0k")
+
+[node name="PlayerHand" type="Marker2D" parent="." unique_id=2099492454]
+position = Vector2(576, 550)
+metadata/_edit_group_ = true
+
+[node name="Card1" type="Marker2D" parent="PlayerHand" unique_id=1180928342]
+position = Vector2(-100, 0)
+
+[node name="Card2" type="Marker2D" parent="PlayerHand" unique_id=771448588]
+position = Vector2(100, 0)

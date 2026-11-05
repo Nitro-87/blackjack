@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://dv32v1x73au3x"]
+
+[ext_resource type="Texture2D" uid="uid://bqoksyp2i1ym0" path="res://godot-blackjack-main/Cards/sprite_00.png" id="1_kikvd"]
+[ext_resource type="Script" uid="uid://dageeq25j4s5c" path="res://card.gd" id="1_rjlel"]
+
+[node name="card" type="Node2D" unique_id=1476860509]
+script = ExtResource("1_rjlel")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1283632956]
+texture_filter = 1
+scale = Vector2(3, 3)
+texture = ExtResource("1_kikvd")
