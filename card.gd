@@ -32,3 +32,4 @@ func _ready() -> void:
 	await get_tree().create_timer(1.0).timeout
 	var new_texture = load(card_texture())
 	$Sprite2D.texture = new_texture
+	#test commit
