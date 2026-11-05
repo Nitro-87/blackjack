@@ -6,6 +6,8 @@ var ranks = ["Ace", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen
 var deck = []
 var player_hand = []
 var dealer_hand = [] 
+var pscore = 0
+var dscore = 0 
 
 func new_deck():
 	deck.clear()
@@ -24,14 +26,47 @@ func deal_card():
 	new_card.suit = card_data[1] 
 	add_child(new_card)
 	return new_card
+	
+func hand_value(hand) -> int:
+	var total = 0
+	var aces = 0
+	for card in hand:
+		total+= card.card_value()
+		if card.rank == "Ace":
+			aces += 1
+	
+	while total > 21 and aces > 0:
+		total -= 10
+		aces -= 1
+	return total
 
 func _ready() -> void:
 	new_deck()
 	
-	deal_card().position = $PlayerHand/Card1.global_position
-	deal_card().position = $PlayerHand/Card2.global_position
+	var new_card = deal_card()
+	player_hand.append(new_card)
+	new_card.position = $PlayerHand/Card1.global_position
 	
-	deal_card().position = $DealerHand/DCard1.global_position
-	deal_card().position = $DealerHand/DCard2.global_position
+	new_card = deal_card()
+	player_hand.append(new_card)
+	new_card.position = $PlayerHand/Card2.global_position
 	
+	new_card = deal_card()
+	dealer_hand.append(new_card)
+	new_card.position = $DealerHand/DCard1.global_position
 	
+	new_card = deal_card()
+	dealer_hand.append(new_card)
+	new_card.position = $DealerHand/DCard2.global_position
+
+func _process(delta: float) -> void:
+	if player_hand == null:
+		$PlayerHand/total.text = ("Score:" + str(0))
+	else:
+		$PlayerHand/total.text = ("Score:" + str(hand_value(player_hand)))
+	
+	if dealer_hand == null:
+		$DealerHand/dtotal.text = ("Score:" + str(0))
+	else:
+		$DealerHand/dtotal.text = ("Score:" + str(hand_value(dealer_hand)))
+		

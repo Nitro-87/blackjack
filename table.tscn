@@ -3,6 +3,8 @@
 [ext_resource type="Script" uid="uid://ch3y0x1w1to4v" path="res://table.gd" id="1_jd0nb"]
 [ext_resource type="PackedScene" uid="uid://dv32v1x73au3x" path="res://card.tscn" id="2_v5i0k"]
 
+[sub_resource type="GDScript" id="GDScript_v5i0k"]
+
 [node name="table" type="Node2D" unique_id=1750438773]
 script = ExtResource("1_jd0nb")
 card = ExtResource("2_v5i0k")
@@ -17,6 +19,13 @@ position = Vector2(-100, 0)
 [node name="Card2" type="Marker2D" parent="PlayerHand" unique_id=771448588]
 position = Vector2(100, 0)
 
+[node name="total" type="Label" parent="PlayerHand" unique_id=738789074]
+offset_left = 400.0
+offset_right = 444.0
+offset_bottom = 23.0
+text = "Total: "
+script = SubResource("GDScript_v5i0k")
+
 [node name="DealerHand" type="Marker2D" parent="." unique_id=1042551664]
 position = Vector2(576, 100)
 
@@ -25,3 +34,9 @@ position = Vector2(-100, 0)
 
 [node name="DCard2" type="Marker2D" parent="DealerHand" unique_id=480440773]
 position = Vector2(100, 0)
+
+[node name="dtotal" type="Label" parent="DealerHand" unique_id=55865597]
+offset_left = 400.0
+offset_right = 444.0
+offset_bottom = 23.0
+text = "Total:"
