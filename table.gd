@@ -16,20 +16,22 @@ func new_deck():
 				deck.append([rank, suit])
 		deck.shuffle()
 		i+= 1
+		
+func deal_card():
+	var card_data = deck.pop_back()
+	var new_card = card.instantiate()
+	new_card.rank = card_data[0]
+	new_card.suit = card_data[1] 
+	add_child(new_card)
+	return new_card
 
 func _ready() -> void:
 	new_deck()
 	
-	var c1 = card.instantiate()
-	add_child(c1)
-	c1.position = $PlayerHand/Card1.global_position
-	var card_data = deck.pop_back()
-	c1.rank = card_data[0]
-	c1.suit = card_data[1] 
+	deal_card().position = $PlayerHand/Card1.global_position
+	deal_card().position = $PlayerHand/Card2.global_position
 	
-	var c2 = card.instantiate()
-	add_child(c2)
-	c2.position = $PlayerHand/Card2.global_position
-	card_data = deck.pop_back()
-	c2.rank = card_data[0]
-	c2.suit = card_data[1]
+	deal_card().position = $DealerHand/DCard1.global_position
+	deal_card().position = $DealerHand/DCard2.global_position
+	
+	

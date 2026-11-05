@@ -8,11 +8,20 @@ script = ExtResource("1_jd0nb")
 card = ExtResource("2_v5i0k")
 
 [node name="PlayerHand" type="Marker2D" parent="." unique_id=2099492454]
-position = Vector2(576, 550)
+position = Vector2(576, 548)
 metadata/_edit_group_ = true
 
 [node name="Card1" type="Marker2D" parent="PlayerHand" unique_id=1180928342]
 position = Vector2(-100, 0)
 
 [node name="Card2" type="Marker2D" parent="PlayerHand" unique_id=771448588]
+position = Vector2(100, 0)
+
+[node name="DealerHand" type="Marker2D" parent="." unique_id=1042551664]
+position = Vector2(576, 100)
+
+[node name="DCard1" type="Marker2D" parent="DealerHand" unique_id=1222386591]
+position = Vector2(-100, 0)
+
+[node name="DCard2" type="Marker2D" parent="DealerHand" unique_id=480440773]
 position = Vector2(100, 0)
