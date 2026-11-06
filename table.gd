@@ -6,8 +6,8 @@ var ranks = ["Ace", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen
 var deck = []
 var player_hand = []
 var dealer_hand = [] 
-var pscore = 0
-var dscore = 0 
+var dealer_hidden = null
+var player_turn = true
 
 func new_deck():
 	deck.clear()
@@ -40,6 +40,33 @@ func hand_value(hand) -> int:
 		total -= 10
 		aces -= 1
 	return total
+	
+func hit():
+	for card in player_hand:
+		var tween = create_tween()
+		tween.tween_property(card, "position:x", card.position.x - 200, 0.75)
+	var new_card = deal_card()
+	player_hand.append(new_card)
+	new_card.position = $PlayerHand/Card2.global_position
+	new_card.flip()
+
+func dealer_hit():
+	for card in dealer_hand:
+		var tween = create_tween()
+		tween.tween_property(card, "position:x", card.position.x - 200, 0.75)
+	var new_card = deal_card()
+	dealer_hand.append(new_card)
+	new_card.position = $DealerHand/DCard2.global_position
+	new_card.flip()
+	
+func stand():
+	player_turn = false
+	dealer_hidden.flip()
+	await get_tree().create_timer(1.5).timeout
+	while hand_value(dealer_hand) < 17:
+		dealer_hit()
+		await get_tree().create_timer(1.0).timeout
+	
 
 func _ready() -> void:
 	new_deck()
@@ -59,9 +86,15 @@ func _ready() -> void:
 	new_card.position = $DealerHand/DCard1.global_position
 	new_card.flip()
 	
-	new_card = deal_card()
-	dealer_hand.append(new_card)
-	new_card.position = $DealerHand/DCard2.global_position
+	dealer_hidden = deal_card()
+	dealer_hand.append(dealer_hidden)
+	dealer_hidden.position = $DealerHand/DCard2.global_position
+
+func _input(event):
+	if Input.is_action_just_pressed("stand") and player_turn:
+		stand()
+	if Input.is_action_just_pressed("hit") and player_turn:
+		hit()
 
 func _process(delta: float) -> void:
 	if player_hand == null:
@@ -73,4 +106,3 @@ func _process(delta: float) -> void:
 		$DealerHand/dtotal.text = ("Score:" + str(0))
 	else:
 		$DealerHand/dtotal.text = ("Score:" + str(hand_value(dealer_hand)))
-		
