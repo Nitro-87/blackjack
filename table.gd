@@ -31,9 +31,10 @@ func hand_value(hand) -> int:
 	var total = 0
 	var aces = 0
 	for card in hand:
-		total+= card.card_value()
-		if card.rank == "Ace":
-			aces += 1
+		if card.flipped:
+			total+= card.card_value()
+			if card.rank == "Ace":
+				aces += 1
 	
 	while total > 21 and aces > 0:
 		total -= 10
@@ -46,14 +47,17 @@ func _ready() -> void:
 	var new_card = deal_card()
 	player_hand.append(new_card)
 	new_card.position = $PlayerHand/Card1.global_position
+	new_card.flip()
 	
 	new_card = deal_card()
 	player_hand.append(new_card)
 	new_card.position = $PlayerHand/Card2.global_position
+	new_card.flip()
 	
 	new_card = deal_card()
 	dealer_hand.append(new_card)
 	new_card.position = $DealerHand/DCard1.global_position
+	new_card.flip()
 	
 	new_card = deal_card()
 	dealer_hand.append(new_card)

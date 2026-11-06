@@ -2,6 +2,7 @@ extends Node2D
 
 var rank = null
 var suit = null
+var flipped = false
 
 func card_value() -> int:
 	if rank in ["Jack", "Queen", "King"]:
@@ -28,7 +29,9 @@ func card_texture() -> String:
 		value =  value*2-1
 	return "res://godot-blackjack-main/Cards/sprite_" + str(value) + ".png"
 
-func _ready() -> void:
+func flip() -> void:
 	await get_tree().create_timer(1.0).timeout
 	var new_texture = load(card_texture())
 	$Sprite2D.texture = new_texture
+	flipped = true
+	
