@@ -31,7 +31,12 @@ func card_texture() -> String:
 
 func flip() -> void:
 	await get_tree().create_timer(0.75).timeout
-	var new_texture = load(card_texture())
-	$Sprite2D.texture = new_texture
+	var tween = create_tween()
+	tween.tween_property(self, "scale:x", 0, 0.25)
+	tween.tween_callback( func():
+		var new_texture = load(card_texture())
+		$Sprite2D.texture = new_texture
+	)
+	tween.tween_property(self, "scale:x", 1, 0.25)
 	flipped = true
 	

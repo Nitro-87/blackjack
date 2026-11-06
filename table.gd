@@ -53,7 +53,7 @@ func hit():
 func dealer_hit():
 	for card in dealer_hand:
 		var tween = create_tween()
-		tween.tween_property(card, "position:x", card.position.x - 200, 0.75)
+		tween.tween_property(card, "position:x", card.position.x - 200, 1.0)
 	var new_card = deal_card()
 	dealer_hand.append(new_card)
 	new_card.position = $DealerHand/DCard2.global_position
