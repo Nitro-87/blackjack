@@ -9,7 +9,7 @@ var dealer_hand = []
 var player_score = 0
 var dealer_score = 0
 var dealer_hidden = null
-var player_turn = true
+var player_turn = false
 
 func new_deck():
 	deck.clear()
@@ -72,6 +72,7 @@ func stand():
 	player_turn = false
 	await dealer_hidden.flip()
 	while hand_value(dealer_hand) < 17:
+		await get_tree().create_timer(0.5).timeout
 		await dealer_hit()
 		
 	dealer_score = hand_value(dealer_hand)
@@ -92,21 +93,23 @@ func _ready() -> void:
 	var new_card = deal_card()
 	player_hand.append(new_card)
 	new_card.position = $PlayerHand/Card1.global_position
-	new_card.flip()
+	await new_card.flip()
 	
 	new_card = deal_card()
 	player_hand.append(new_card)
 	new_card.position = $PlayerHand/Card2.global_position
-	new_card.flip()
+	await new_card.flip()
 	
 	new_card = deal_card()
 	dealer_hand.append(new_card)
 	new_card.position = $DealerHand/DCard1.global_position
-	new_card.flip()
+	await new_card.flip()
 	
 	dealer_hidden = deal_card()
 	dealer_hand.append(dealer_hidden)
 	dealer_hidden.position = $DealerHand/DCard2.global_position
+	await get_tree().create_timer(0.5).timeout
+	player_turn = true
 
 func _input(event):
 	if Input.is_action_just_pressed("stand") and player_turn:
