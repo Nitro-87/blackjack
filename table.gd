@@ -5,7 +5,9 @@ var suits = ["Purple", "Blue"]
 var ranks = ["Ace", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King"]
 var deck = []
 var player_hand = []
-var dealer_hand = [] 
+var dealer_hand = []
+var player_score = 0
+var dealer_score = 0
 var dealer_hidden = null
 var player_turn = true
 
@@ -42,13 +44,20 @@ func hand_value(hand) -> int:
 	return total
 	
 func hit():
+	player_turn = false
 	for card in player_hand:
 		var tween = create_tween()
 		tween.tween_property(card, "position:x", card.position.x - 200, 0.75)
 	var new_card = deal_card()
 	player_hand.append(new_card)
 	new_card.position = $PlayerHand/Card2.global_position
-	new_card.flip()
+	await new_card.flip()
+		
+	player_score = hand_value(player_hand)
+	if player_score > 21:
+		$result.text = "Bust"
+	else:
+		player_turn = true
 
 func dealer_hit():
 	for card in dealer_hand:
@@ -57,16 +66,25 @@ func dealer_hit():
 	var new_card = deal_card()
 	dealer_hand.append(new_card)
 	new_card.position = $DealerHand/DCard2.global_position
-	new_card.flip()
+	await new_card.flip()
 	
 func stand():
 	player_turn = false
-	dealer_hidden.flip()
-	await get_tree().create_timer(1.5).timeout
+	await dealer_hidden.flip()
 	while hand_value(dealer_hand) < 17:
-		dealer_hit()
-		await get_tree().create_timer(1.0).timeout
+		await dealer_hit()
+		
+	dealer_score = hand_value(dealer_hand)
+	await get_tree().create_timer(0.5).timeout
 	
+	if dealer_score > 21:
+		$result.text = "Dealer Busts"
+	elif player_score > dealer_score:
+		$result.text = "Player wins"
+	elif dealer_score > player_score:
+		$result.text = "Dealer Wins"   
+	else:
+		$result.text = "Push"
 
 func _ready() -> void:
 	new_deck()
@@ -97,12 +115,15 @@ func _input(event):
 		hit()
 
 func _process(delta: float) -> void:
+	
 	if player_hand == null:
 		$PlayerHand/total.text = ("Score:" + str(0))
 	else:
-		$PlayerHand/total.text = ("Score:" + str(hand_value(player_hand)))
+		player_score = hand_value(player_hand)
+		$PlayerHand/total.text = ("Score:" + str(player_score))
 	
 	if dealer_hand == null:
 		$DealerHand/dtotal.text = ("Score:" + str(0))
 	else:
-		$DealerHand/dtotal.text = ("Score:" + str(hand_value(dealer_hand)))
+		dealer_score = hand_value(dealer_hand)
+		$DealerHand/dtotal.text = ("Score:" + str(dealer_score))

@@ -36,7 +36,8 @@ func flip() -> void:
 	tween.tween_callback( func():
 		var new_texture = load(card_texture())
 		$Sprite2D.texture = new_texture
+		flipped = true
 	)
 	tween.tween_property(self, "scale:x", 1, 0.25)
-	flipped = true
+	await tween.finished
 	

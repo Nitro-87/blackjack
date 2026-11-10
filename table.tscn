@@ -40,3 +40,10 @@ offset_left = 400.0
 offset_right = 444.0
 offset_bottom = 23.0
 text = "Total:"
+
+[node name="result" type="Label" parent="." unique_id=1606853642]
+anchors_preset = -1
+offset_left = 576.0
+offset_top = 324.0
+offset_right = 624.0
+offset_bottom = 347.0
