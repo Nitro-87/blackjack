@@ -56,6 +56,7 @@ func hit():
 	player_score = hand_value(player_hand)
 	if player_score > 21:
 		$result.text = "Bust"
+		round_over()
 	else:
 		player_turn = true
 
@@ -80,15 +81,33 @@ func stand():
 	
 	if dealer_score > 21:
 		$result.text = "Dealer Busts"
+		round_over()
 	elif player_score > dealer_score:
 		$result.text = "Player wins"
+		round_over()
 	elif dealer_score > player_score:
-		$result.text = "Dealer Wins"   
+		$result.text = "Dealer Wins" 
+		round_over()
 	else:
 		$result.text = "Push"
-
-func _ready() -> void:
+		round_over()
+		
+func round_over():
+	$playAgain.show()
+	
+		
+func new_round():
+	player_turn = false
+	$result.text = ""
+	$playAgain.hide()
 	new_deck()
+	
+	for card in player_hand:
+		card.queue_free()
+	for card in dealer_hand:
+		card.queue_free()
+	player_hand.clear()
+	dealer_hand.clear()
 	
 	var new_card = deal_card()
 	player_hand.append(new_card)
@@ -110,6 +129,11 @@ func _ready() -> void:
 	dealer_hidden.position = $DealerHand/DCard2.global_position
 	await get_tree().create_timer(0.5).timeout
 	player_turn = true
+	
+
+func _ready() -> void:
+	new_round()
+	
 
 func _input(event):
 	if Input.is_action_just_pressed("stand") and player_turn:
@@ -130,3 +154,7 @@ func _process(delta: float) -> void:
 	else:
 		dealer_score = hand_value(dealer_hand)
 		$DealerHand/dtotal.text = ("Score:" + str(dealer_score))
+
+
+func _on_play_again_pressed() -> void:
+	new_round()

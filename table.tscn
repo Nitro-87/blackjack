@@ -47,3 +47,13 @@ offset_left = 576.0
 offset_top = 324.0
 offset_right = 624.0
 offset_bottom = 347.0
+
+[node name="playAgain" type="Button" parent="." unique_id=1516161488]
+visible = false
+offset_left = 963.0
+offset_top = 302.0
+offset_right = 1052.0
+offset_bottom = 363.0
+text = "New Deal"
+
+[connection signal="pressed" from="playAgain" to="." method="_on_play_again_pressed"]
