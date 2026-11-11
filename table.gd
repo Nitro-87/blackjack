@@ -10,6 +10,7 @@ var player_score = 0
 var dealer_score = 0
 var dealer_hidden = null
 var player_turn = false
+var money = 100
 
 func new_deck():
 	deck.clear()
@@ -56,7 +57,7 @@ func hit():
 	player_score = hand_value(player_hand)
 	if player_score > 21:
 		$result.text = "Bust"
-		round_over()
+		round_over("d")
 	else:
 		player_turn = true
 
@@ -81,20 +82,23 @@ func stand():
 	
 	if dealer_score > 21:
 		$result.text = "Dealer Busts"
-		round_over()
+		round_over("p")
 	elif player_score > dealer_score:
 		$result.text = "Player wins"
-		round_over()
+		round_over("p")
 	elif dealer_score > player_score:
 		$result.text = "Dealer Wins" 
-		round_over()
+		round_over("d")
 	else:
 		$result.text = "Push"
-		round_over()
+		round_over("t")
 		
-func round_over():
+func round_over(winner):
 	$playAgain.show()
-	
+	if winner == "p":
+		money += 50
+	elif winner == "d":
+		money -= 50	
 		
 func new_round():
 	player_turn = false
@@ -140,8 +144,18 @@ func _input(event):
 		stand()
 	if Input.is_action_just_pressed("hit") and player_turn:
 		hit()
+	if Input.is_action_just_pressed("new_round") and $playAgain.is_visible_in_tree():
+		new_round()
+
 
 func _process(delta: float) -> void:
+	$PlayerHand/money.text = "$" + str(money)
+	if player_turn:
+		$PlayerHand/hit.show()
+		$PlayerHand/stand.show()
+	else:
+		$PlayerHand/hit.hide()
+		$PlayerHand/stand.hide()
 	
 	if player_hand == null:
 		$PlayerHand/total.text = ("Score:" + str(0))
@@ -158,3 +172,9 @@ func _process(delta: float) -> void:
 
 func _on_play_again_pressed() -> void:
 	new_round()
+
+func _on_hit_pressed() -> void:
+	hit()
+
+func _on_stand_pressed() -> void:
+	stand()

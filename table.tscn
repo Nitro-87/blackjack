@@ -26,6 +26,29 @@ offset_bottom = 23.0
 text = "Total: "
 script = SubResource("GDScript_v5i0k")
 
+[node name="money" type="Label" parent="PlayerHand" unique_id=1768704190]
+offset_left = 400.0
+offset_top = 40.0
+offset_right = 448.0
+offset_bottom = 63.0
+text = "$"
+script = SubResource("GDScript_v5i0k")
+
+[node name="hit" type="Button" parent="PlayerHand" unique_id=65978467]
+offset_left = 250.0
+offset_top = -30.0
+offset_right = 350.0
+offset_bottom = 20.0
+text = "Hit"
+
+[node name="stand" type="Button" parent="PlayerHand" unique_id=1778663401]
+offset_left = 250.0
+offset_top = 30.0
+offset_right = 350.0
+offset_bottom = 80.0
+text = "Stand
+"
+
 [node name="DealerHand" type="Marker2D" parent="." unique_id=1042551664]
 position = Vector2(576, 100)
 
@@ -52,8 +75,10 @@ offset_bottom = 347.0
 visible = false
 offset_left = 963.0
 offset_top = 302.0
-offset_right = 1052.0
-offset_bottom = 363.0
+offset_right = 1063.0
+offset_bottom = 362.0
 text = "New Deal"
 
+[connection signal="pressed" from="PlayerHand/hit" to="." method="_on_hit_pressed"]
+[connection signal="pressed" from="PlayerHand/stand" to="." method="_on_stand_pressed"]
 [connection signal="pressed" from="playAgain" to="." method="_on_play_again_pressed"]
