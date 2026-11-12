@@ -5,6 +5,24 @@
 
 [sub_resource type="GDScript" id="GDScript_v5i0k"]
 
+[sub_resource type="ImageTexture" id="ImageTexture_v5i0k"]
+
+[sub_resource type="ImageTexture" id="ImageTexture_vjl2i"]
+
+[sub_resource type="ImageTexture" id="ImageTexture_jry6c"]
+
+[sub_resource type="ImageTexture" id="ImageTexture_bhh2s"]
+
+[sub_resource type="ImageTexture" id="ImageTexture_64sdq"]
+
+[sub_resource type="ImageTexture" id="ImageTexture_ormek"]
+
+[sub_resource type="ImageTexture" id="ImageTexture_ibia0"]
+
+[sub_resource type="ImageTexture" id="ImageTexture_xnpc2"]
+
+[sub_resource type="ImageTexture" id="ImageTexture_urxxv"]
+
 [node name="table" type="Node2D" unique_id=1750438773]
 script = ExtResource("1_jd0nb")
 card = ExtResource("2_v5i0k")
@@ -51,22 +69,42 @@ text = "Stand
 "
 
 [node name="betSlider" type="VSlider" parent="PlayerHand" unique_id=528831635]
-visible = false
 offset_left = 410.0
 offset_top = -400.0
 offset_right = 430.0
-offset_bottom = -80.0
+offset_bottom = -105.0
 min_value = 1.0
 value = 50.0
 rounded = true
 
+[node name="betInput" type="SpinBox" parent="PlayerHand/betSlider" unique_id=1722436503]
+layout_mode = 0
+offset_left = -40.0
+offset_top = 305.0
+offset_right = 60.0
+offset_bottom = 345.0
+theme_override_constants/buttons_width = 0
+theme_override_icons/updown = SubResource("ImageTexture_v5i0k")
+theme_override_icons/up = SubResource("ImageTexture_vjl2i")
+theme_override_icons/up_hover = SubResource("ImageTexture_jry6c")
+theme_override_icons/up_pressed = SubResource("ImageTexture_bhh2s")
+theme_override_icons/up_disabled = SubResource("ImageTexture_64sdq")
+theme_override_icons/down = SubResource("ImageTexture_ormek")
+theme_override_icons/down_hover = SubResource("ImageTexture_ibia0")
+theme_override_icons/down_pressed = SubResource("ImageTexture_xnpc2")
+theme_override_icons/down_disabled = SubResource("ImageTexture_urxxv")
+value = 50.0
+alignment = 1
+update_on_text_changed = true
+prefix = "$"
+
 [node name="betButton" type="Button" parent="PlayerHand/betSlider" unique_id=997717568]
 layout_mode = 0
 offset_left = -40.0
-offset_top = 330.0
+offset_top = 350.0
 offset_right = 60.0
 offset_bottom = 390.0
-text = "Bet $50"
+text = "Bet"
 
 [node name="DealerHand" type="Marker2D" parent="." unique_id=1042551664]
 position = Vector2(576, 100)
@@ -119,5 +157,6 @@ text = "Blackjack"
 [connection signal="pressed" from="PlayerHand/hit" to="." method="_on_hit_pressed"]
 [connection signal="pressed" from="PlayerHand/stand" to="." method="_on_stand_pressed"]
 [connection signal="value_changed" from="PlayerHand/betSlider" to="." method="_on_bet_slider_value_changed"]
+[connection signal="value_changed" from="PlayerHand/betSlider/betInput" to="." method="_on_bet_input_value_changed"]
 [connection signal="pressed" from="PlayerHand/betSlider/betButton" to="." method="_on_bet_button_pressed"]
 [connection signal="pressed" from="playAgain" to="." method="_on_play_again_pressed"]

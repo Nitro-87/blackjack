@@ -147,6 +147,7 @@ func new_round():
 func make_bet():
 	$PlayerHand/betSlider.show()
 	$PlayerHand/betSlider.max_value = money
+	$PlayerHand/betSlider/betInput.max_value = money
 	
 func you_lose():
 	await get_tree().create_timer(2.5).timeout
@@ -227,4 +228,8 @@ func _on_bet_button_pressed() -> void:
 
 func _on_bet_slider_value_changed(value: float) -> void:
 	bet = int(value)
-	$PlayerHand/betSlider/betButton.text = "Bet $" + str(bet)
+	$PlayerHand/betSlider/betInput.value = bet
+
+func _on_bet_input_value_changed(value: float) -> void:
+	bet = int(value)
+	$PlayerHand/betSlider.value = bet
