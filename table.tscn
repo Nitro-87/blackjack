@@ -27,6 +27,7 @@ text = "Total: "
 script = SubResource("GDScript_v5i0k")
 
 [node name="money" type="Label" parent="PlayerHand" unique_id=1768704190]
+visible = false
 offset_left = 400.0
 offset_top = 40.0
 offset_right = 448.0
@@ -48,6 +49,24 @@ offset_right = 350.0
 offset_bottom = 80.0
 text = "Stand
 "
+
+[node name="betSlider" type="VSlider" parent="PlayerHand" unique_id=528831635]
+visible = false
+offset_left = 410.0
+offset_top = -400.0
+offset_right = 430.0
+offset_bottom = -80.0
+min_value = 1.0
+value = 1.0
+rounded = true
+
+[node name="betButton" type="Button" parent="PlayerHand/betSlider" unique_id=997717568]
+layout_mode = 0
+offset_left = -40.0
+offset_top = 330.0
+offset_right = 60.0
+offset_bottom = 390.0
+text = "Bet $1"
 
 [node name="DealerHand" type="Marker2D" parent="." unique_id=1042551664]
 position = Vector2(576, 100)
@@ -79,6 +98,26 @@ offset_right = 1063.0
 offset_bottom = 362.0
 text = "New Deal"
 
+[node name="youLose" type="Label" parent="." unique_id=208650822]
+visible = false
+anchors_preset = -1
+offset_left = 487.0
+offset_top = 301.0
+offset_right = 662.0
+offset_bottom = 351.0
+theme_override_font_sizes/font_size = 32
+text = "You Lose :("
+
+[node name="title" type="Label" parent="." unique_id=880153592]
+offset_left = 514.0
+offset_top = 300.0
+offset_right = 659.0
+offset_bottom = 345.0
+theme_override_font_sizes/font_size = 32
+text = "Blackjack"
+
 [connection signal="pressed" from="PlayerHand/hit" to="." method="_on_hit_pressed"]
 [connection signal="pressed" from="PlayerHand/stand" to="." method="_on_stand_pressed"]
+[connection signal="value_changed" from="PlayerHand/betSlider" to="." method="_on_bet_slider_value_changed"]
+[connection signal="pressed" from="PlayerHand/betSlider/betButton" to="." method="_on_bet_button_pressed"]
 [connection signal="pressed" from="playAgain" to="." method="_on_play_again_pressed"]

@@ -11,6 +11,7 @@ var dealer_score = 0
 var dealer_hidden = null
 var player_turn = false
 var money = 100
+var bet = 0
 
 func new_deck():
 	deck.clear()
@@ -94,24 +95,27 @@ func stand():
 		round_over("t")
 		
 func round_over(winner):
-	$playAgain.show()
+	if money > 0:
+		$playAgain.show()
 	if winner == "p":
-		money += 50
-	elif winner == "d":
-		money -= 50	
-		
-func new_round():
-	player_turn = false
-	$result.text = ""
-	$playAgain.hide()
-	new_deck()
+		money += 2*bet
+	elif winner == "t":
+		money += bet
 	
+	if money <= 0:
+		you_lose()
+		
+func clear_cards():
 	for card in player_hand:
 		card.queue_free()
 	for card in dealer_hand:
 		card.queue_free()
 	player_hand.clear()
 	dealer_hand.clear()
+		
+func new_round():
+	$PlayerHand/betSlider.hide()
+	new_deck()
 	
 	var new_card = deal_card()
 	player_hand.append(new_card)
@@ -133,10 +137,25 @@ func new_round():
 	dealer_hidden.position = $DealerHand/DCard2.global_position
 	await get_tree().create_timer(0.5).timeout
 	player_turn = true
+
+func make_bet():
+	$PlayerHand/betSlider.show()
+	$PlayerHand/betSlider.max_value = money
+	
+func you_lose():
+	await get_tree().create_timer(2.5).timeout
+	for child in get_children():
+		child.hide()
+	$youLose.show()
+	await get_tree().create_timer(2.5).timeout
+	get_tree().quit()
 	
 
 func _ready() -> void:
-	new_round()
+	await get_tree().create_timer(2.0).timeout
+	$title.hide()
+	$PlayerHand/money.show()
+	make_bet()
 	
 
 func _input(event):
@@ -150,6 +169,11 @@ func _input(event):
 
 func _process(delta: float) -> void:
 	$PlayerHand/money.text = "$" + str(money)
+	player_score = hand_value(player_hand)
+	dealer_score = hand_value(dealer_hand)
+	$PlayerHand/total.text = ("Score:" + str(player_score))
+	$DealerHand/dtotal.text = ("Score:" + str(dealer_score))
+	
 	if player_turn:
 		$PlayerHand/hit.show()
 		$PlayerHand/stand.show()
@@ -157,24 +181,39 @@ func _process(delta: float) -> void:
 		$PlayerHand/hit.hide()
 		$PlayerHand/stand.hide()
 	
-	if player_hand == null:
-		$PlayerHand/total.text = ("Score:" + str(0))
+	if player_hand.is_empty():
+		$PlayerHand/total.hide()
 	else:
-		player_score = hand_value(player_hand)
-		$PlayerHand/total.text = ("Score:" + str(player_score))
+		$PlayerHand/total.show()
 	
-	if dealer_hand == null:
-		$DealerHand/dtotal.text = ("Score:" + str(0))
+	if dealer_hand.is_empty():
+		$DealerHand/dtotal.hide()
 	else:
-		dealer_score = hand_value(dealer_hand)
-		$DealerHand/dtotal.text = ("Score:" + str(dealer_score))
+		
+		$DealerHand/dtotal.show()
 
 
 func _on_play_again_pressed() -> void:
-	new_round()
+	player_turn = false
+	clear_cards()
+	$result.text = ""
+	$playAgain.hide()
+	make_bet()
+
+
 
 func _on_hit_pressed() -> void:
 	hit()
 
 func _on_stand_pressed() -> void:
 	stand()
+
+
+func _on_bet_button_pressed() -> void:
+	money -= bet
+	new_round()
+
+
+func _on_bet_slider_value_changed(value: float) -> void:
+	bet = int(value)
+	$PlayerHand/betSlider/betButton.text = "Bet $" + str(bet)
