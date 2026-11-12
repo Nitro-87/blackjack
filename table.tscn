@@ -57,7 +57,7 @@ offset_top = -400.0
 offset_right = 430.0
 offset_bottom = -80.0
 min_value = 1.0
-value = 1.0
+value = 50.0
 rounded = true
 
 [node name="betButton" type="Button" parent="PlayerHand/betSlider" unique_id=997717568]
@@ -66,7 +66,7 @@ offset_left = -40.0
 offset_top = 330.0
 offset_right = 60.0
 offset_bottom = 390.0
-text = "Bet $1"
+text = "Bet $50"
 
 [node name="DealerHand" type="Marker2D" parent="." unique_id=1042551664]
 position = Vector2(576, 100)

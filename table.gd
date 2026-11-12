@@ -11,7 +11,7 @@ var dealer_score = 0
 var dealer_hidden = null
 var player_turn = false
 var money = 100
-var bet = 0
+var bet = 50
 
 func new_deck():
 	deck.clear()
@@ -95,15 +95,17 @@ func stand():
 		round_over("t")
 		
 func round_over(winner):
-	if money > 0:
-		$playAgain.show()
 	if winner == "p":
-		money += 2*bet
+		money += 2 * bet
 	elif winner == "t":
 		money += bet
-	
+	elif winner == "b":
+		money += 2.5 * bet
+		
 	if money <= 0:
 		you_lose()
+	else:
+		$playAgain.show()
 		
 func clear_cards():
 	for card in player_hand:
@@ -136,7 +138,11 @@ func new_round():
 	dealer_hand.append(dealer_hidden)
 	dealer_hidden.position = $DealerHand/DCard2.global_position
 	await get_tree().create_timer(0.5).timeout
-	player_turn = true
+	
+	if player_score == 21:
+		blackjack()
+	else:
+		player_turn = true
 
 func make_bet():
 	$PlayerHand/betSlider.show()
@@ -150,6 +156,14 @@ func you_lose():
 	await get_tree().create_timer(2.5).timeout
 	get_tree().quit()
 	
+func blackjack():
+	await dealer_hidden.flip()
+	if dealer_score != 21:
+		round_over("b")
+		$result.text = "Blackjack!"
+	else:
+		round_over("t")
+		$result.text = "Push"
 
 func _ready() -> void:
 	await get_tree().create_timer(2.0).timeout
@@ -163,12 +177,14 @@ func _input(event):
 		stand()
 	if Input.is_action_just_pressed("hit") and player_turn:
 		hit()
+	if Input.is_action_just_pressed("hit") and $PlayerHand/betSlider.is_visible_in_tree():
+		_on_bet_button_pressed()
 	if Input.is_action_just_pressed("new_round") and $playAgain.is_visible_in_tree():
-		new_round()
+		_on_play_again_pressed()
 
 
 func _process(delta: float) -> void:
-	$PlayerHand/money.text = "$" + str(money)
+	$PlayerHand/money.text = "$" + str(roundi(money))
 	player_score = hand_value(player_hand)
 	dealer_score = hand_value(dealer_hand)
 	$PlayerHand/total.text = ("Score:" + str(player_score))
@@ -189,7 +205,6 @@ func _process(delta: float) -> void:
 	if dealer_hand.is_empty():
 		$DealerHand/dtotal.hide()
 	else:
-		
 		$DealerHand/dtotal.show()
 
 
@@ -200,19 +215,15 @@ func _on_play_again_pressed() -> void:
 	$playAgain.hide()
 	make_bet()
 
-
-
 func _on_hit_pressed() -> void:
 	hit()
 
 func _on_stand_pressed() -> void:
 	stand()
 
-
 func _on_bet_button_pressed() -> void:
 	money -= bet
 	new_round()
-
 
 func _on_bet_slider_value_changed(value: float) -> void:
 	bet = int(value)
