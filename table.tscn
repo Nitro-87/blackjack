@@ -69,6 +69,7 @@ text = "Stand
 "
 
 [node name="betSlider" type="VSlider" parent="PlayerHand" unique_id=528831635]
+visible = false
 offset_left = 410.0
 offset_top = -400.0
 offset_right = 430.0
