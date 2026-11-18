@@ -182,6 +182,8 @@ func _input(event):
 		_on_bet_button_pressed()
 	if Input.is_action_just_pressed("new_round") and $playAgain.is_visible_in_tree():
 		_on_play_again_pressed()
+	if Input.is_action_just_pressed("hit") and $playAgain.is_visible_in_tree():
+		_on_play_again_pressed()
 
 
 func _process(delta: float) -> void:
