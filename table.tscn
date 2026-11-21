@@ -98,6 +98,7 @@ value = 50.0
 alignment = 1
 update_on_text_changed = true
 prefix = "$"
+select_all_on_focus = true
 
 [node name="betButton" type="Button" parent="PlayerHand/betSlider" unique_id=997717568]
 layout_mode = 0
